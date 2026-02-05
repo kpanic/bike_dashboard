@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title default="BikeDashboard" suffix=" · Phoenix Framework">
+      {assigns[:page_title]}
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    </script>
+
+    <script>
+      (() => {
+        const setTheme = (theme) => {
+          if (theme === "system") {
+            localStorage.removeItem("phx:theme");
+            document.documentElement.removeAttribute("data-theme");
+          } else {
+            localStorage.setItem("phx:theme", theme);
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+        };
+        if (!document.documentElement.hasAttribute("data-theme")) {
+          setTheme(localStorage.getItem("phx:theme") || "system");
+        }
+        window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "system"));
+        window.addEventListener("phx:set-theme", (e) => setTheme(e.target.dataset.phxTheme));
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-content">
+        <div class="first_line" style="display: flex; align-items: center; gap: 12px;">
+          <span class="logo">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 64 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Bike Dashboard logo"
+            >
+              <!-- Background circle -->
+              <circle cx="32" cy="32" r="30" fill="#1e7f5c" />
+              
+<!-- Map pin -->
+              <path
+                d="M32 14C25.9 14 21 18.9 21 25C21 33.5 32 50 32 50C32 50 43 33.5 43 25C43 18.9 38.1 14 32 14Z"
+                stroke="white"
+                stroke-width="3"
+                fill="none"
+              />
+              
+<!-- Bike wheels -->
+              <circle cx="24" cy="36" r="4" stroke="white" stroke-width="2" />
+              <circle cx="40" cy="36" r="4" stroke="white" stroke-width="2" />
+              
+<!-- Bike frame -->
+              <path
+                d="M24 36L30 30H36L40 36M30 30L28 36"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="map-title">Bike Dashboard 🚲</span>
+          
+<!-- Chat toggle button -->
+          <button
+            phx-click="toggle_chat"
+            class="fixed upper-4 right-4 bg-blue-600 text-white px-4 py-4 rounded-full"
+          >
+            💬 Chat
+          </button>
+        </div>
+
+        <p class="site-tagline">
+          Live bike rental availability — find a ride near you on the map
+        </p>
+      </div>
+    </header>
+    {@inner_content}
+  </body>
+</html>
