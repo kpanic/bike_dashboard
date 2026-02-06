@@ -26,7 +26,7 @@ export const StationsMap = {
         L.tileLayer(
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
-                attribution: '&#169; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors, CC BY-SA license',
+                attribution: '&#169; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors, CC BY-SA license. Data source <a href="https://citybik.es/">CityBikes</a>',
                 maxZoom: 20,
             }).addTo(map);
 
