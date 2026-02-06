@@ -55,7 +55,7 @@ config :logger, :default_formatter,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
-config :bike_dashboard, :poller_update_interval, :timer.minutes(30)
+config :bike_dashboard, :poller_update_interval, :timer.seconds(30)
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

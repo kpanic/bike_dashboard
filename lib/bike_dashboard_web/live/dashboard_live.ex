@@ -8,7 +8,9 @@ defmodule BikeDashboardWeb.DashboardLive do
   alias BikeDashboard.Poller
   alias BikeDashboardWeb.Presence
 
-  def mount(_params, %{"user_name" => user_name, "user_id" => user_id} = _session, socket) do
+  def mount(params, %{"user_name" => user_name, "user_id" => user_id} = _session, socket) do
+    randomize = Map.get(params, "randomize", false)
+
     if connected?(socket) do
       Phoenix.PubSub.subscribe(BikeDashboard.PubSub, @topic)
       Phoenix.PubSub.subscribe(BikeDashboard.PubSub, @chat_topic)
@@ -33,7 +35,7 @@ defmodule BikeDashboardWeb.DashboardLive do
       |> assign(form: to_form(%{"message" => ""}))
       |> assign(chat_open: false)
       |> assign(online_user_ids: [])
-      |> start_async(:stations, fn -> Poller.stations() end)
+      |> start_async(:stations, fn -> Poller.stations(randomize: randomize) end)
 
     {:ok, assigns}
   end
@@ -89,6 +91,10 @@ defmodule BikeDashboardWeb.DashboardLive do
 
   def handle_async(:stations, {:ok, stations}, socket) do
     {:noreply, update_stations(stations, socket)}
+  end
+
+  def handle_event("send-message", %{"message" => ""}, socket) do
+    {:noreply, socket}
   end
 
   def handle_event("send-message", %{"message" => body}, socket) do
